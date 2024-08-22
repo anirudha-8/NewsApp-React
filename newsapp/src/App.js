@@ -5,11 +5,11 @@ import React, { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 
 function App() {
-  const [progress, setprogress] = useState(15);
+  const [progress, setprogress] = useState(0);
 
   const apikey = process.env.REACT_APP_API_KEY;
   const country = 'in';
-  const pageSize = 0;
+  const pageSize = 10;
 
   return (
     <>

@@ -1,12 +1,16 @@
 import React, { useState, useEffect } from 'react'
 import NewsItem from './NewsItem';
 import InfiniteScroll from 'react-infinite-scroll-component';
+import Loader from './Loader';
 export default function News(props) {
     const [page, setpage] = useState(1);
     const [loading, setloading] = useState(true);
     const [totalresult, settotalresult] = useState(0);
     const [article, setarticle] = useState([]);
 
+    const capital = (str) => {
+        return str.charAt(0).toUpperCase() + str.slice(1);
+    }
     //all in one function
     async function newsFun() {
         props.setprogress(30);
@@ -19,11 +23,13 @@ export default function News(props) {
         settotalresult(data.totalResults);
         setloading(false);
         props.setprogress(100);
+        document.title = `SNews-${capital(props.category)}`;
     }
 
     //called when comoonent load
     useEffect(() => {
         newsFun();
+        //  Line 28:8:  React Hook useEffect has a missing dependency: 'newsFun'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
     }, []);
 
     const fetchData = async () => {
@@ -43,13 +49,13 @@ export default function News(props) {
                     <h1>S-News - Top {props.category} News</h1>
                 </div>
                 {/* loading */}
-                {loading ?? <h2 className='text-center'>Loading...</h2>}
+                {loading ?? <div className='text-center'><Loader /></div>}
                 {/* scroll effect */}
                 <InfiniteScroll
                     dataLength={article.length}
                     next={fetchData}
                     hasMore={article.length < totalresult}
-                    loader={<h4>Loading...</h4>}
+                    loader={<div className='text-center'><Loader /></div>}
                     endMessage={
                         <p className='text-center'>
                             <b>Yay! You have seen it all</b>
