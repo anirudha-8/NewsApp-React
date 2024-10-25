@@ -7,14 +7,15 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 function App() {
   const [progress, setprogress] = useState(0);
 
-  const apikey = process.env.REACT_APP_API_KEY;
-  const country = 'in';
+  // const apikey = process.env.REACT_APP_API_KEY;
+  const apikey = '1feeb3ba971c425182492eef91ff97c';
+  const country = 'us';
   const pageSize = 10;
 
   return (
     <>
       <Router>
-        <Navbar />
+        <Navbar setprogress={setprogress} />
         <LoadingBar
           color='#f11946'
           progress={progress}
