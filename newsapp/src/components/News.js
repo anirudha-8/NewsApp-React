@@ -12,23 +12,27 @@ export default function News(props) {
     const capital = (str) => {
         return str.charAt(0).toUpperCase() + str.slice(1);
     }
+
+    // destructure props
+    const { mode, country, pageSize, category, apiKey, setprogress } = props;
+
     //all in one function
     async function newsFun() {
         try {
-            let url = `https://newsapi.org/v2/top-headlines?country=${props.country}&category=${props.category}&page=${1}&pageSize=${props.pageSize}&apiKey=${props.apiKey}`;
+            let url = `https://newsapi.org/v2/top-headlines?country=${country}&category=${category}&page=${1}&pageSize=${pageSize}&apiKey=${apiKey}`;
             let response = await fetch(url);
             let data = await response.json();
-            props.setprogress(0);
+            setprogress(0);
             if (data.status === "error") {
                 setFetchError(true);
                 return;
             }
-            props.setprogress(50);
+            setprogress(50);
             setarticle(data.articles);
             settotalresult(data.totalResults);
             setloading(false);
-            props.setprogress(100);
-            document.title = `SNews-${capital(props.category)}`;
+            setprogress(100);
+            document.title = `SNews-${capital(category)}`;
 
             console.log("fetcherror", fetchError)
         } catch (error) {
@@ -42,14 +46,14 @@ export default function News(props) {
     useEffect(() => {
         newsFun();
         // eslint-disable-next-line
-    }, [props.category]);
+    }, [category]);
 
 
     const fetchData = async () => {
         try {
             const nextpage = page + 1;
             setpage(nextpage);
-            let url = `https://newsapi.org/v2/top-headlines?country=${props.country}&category=${props.category}&page=${nextpage}&pageSize=${props.pageSize}&apiKey=${props.apiKey}`;
+            let url = `https://newsapi.org/v2/top-headlines?country=${country}&category=${category}&page=${nextpage}&pageSize=${pageSize}&apiKey=${apiKey}`;
             let response = await fetch(url);
             let data = await response.json();
 
@@ -81,7 +85,7 @@ export default function News(props) {
                 <div className="container">
                     {/* top */}
                     <div className="text-center" style={{ marginTop: '55px' }}>
-                        <h1>S-News - Top {props.category} News</h1>
+                        <h1>S-News - Top {category} News</h1>
                     </div>
                     {/* loading */}
                     {loading ?? <div className='text-center'><Loader /></div>}
@@ -103,7 +107,7 @@ export default function News(props) {
                                     // map through article=[]
                                     article?.length > 0 && article.map((e) => {
                                         return <div className="col-md-4" key={`${e.url}-${e.publishedAt}-${e.title}`}>
-                                            <NewsItem title={e.title} description={e.description} name={e.source.name} author={e.author} time={e.publishedAt} url={e.url} imgurl={e.urlToImage} />
+                                            <NewsItem title={e.title} description={e.description} name={e.source.name} author={e.author} time={e.publishedAt} url={e.url} imgurl={e.urlToImage} mode={mode} />
                                         </div>
                                     })
                                 }
