@@ -1,3 +1,3 @@
 <p>
-    News app using based component with news api 
+    News app using react function based component with news api 
 </p>
